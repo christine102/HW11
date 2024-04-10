@@ -1,0 +1,48 @@
+
+SHELL=/bin/sh
+PATH=/usr/local/lib/mh:$PATH
+MAILDIR=$HOME/Mail
+LOGFILE=$HOME/Mail/logfile
+SENDMAIL=/usr/sbin/sendmail
+#VERBOSE=1
+VERBOSE=0
+EOL="
+"
+LOG="$EOL$EOL$EOL"
+LOG="New message log:$EOL"
+LOG=`perl GET_MESSAGE_INDEX`
+LOG="$EOL"
+
+## Recipe 1
+# 
+# If it contain multiple entries in "From" header, it detected 
+:0 H:
+* ^From:.*,
+recipe_1
+
+
+## Recipe 2
+#
+# If the subject has contains the words "mock, theCertificate,cheap,measures,diploma,Degree,medication,Diploma, or Magento, it will detect
+
+:0 :
+* ^Subject.*(mock|theCertificate|cheap|measures|diploma|Degree|medication|Diploma|Magento) 
+recipe_2
+
+## Recipe 3
+#
+#If the body of email contains the word alert of celeberate, it will detect
+:0 B:
+* .*(alert|celebrate)
+recipe_3
+
+## Recipe 4
+#
+# If the email has text/plain, text/html or multipart/alternative content type , it will detect 
+:0 HB:
+* ^Content-Type: text/plain
+* ^Content-Type: text/html
+* ^Content-Type: multipart/alternative
+recipe_4
+
+
